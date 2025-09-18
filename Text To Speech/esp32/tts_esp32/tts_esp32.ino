@@ -5,8 +5,8 @@
 #include "SPIFFS.h"
 #include "Audio.h"
 
-const char* ssid = "It'sKhan";  // Replace with your SSID
-const char* password = "itskhan321";  // Replace with your WiFi password
+const char* ssid = "afrasiyab";  // Replace with your SSID
+const char* password = "afra";  // Replace with your WiFi password
 const char* elevenlabs_api_key = "Your_ElevenLabs_API_Key";  // Your ElevenLabs API key
 const char* voice_id = "pNInz6obpgDQGcFmaJgB";  // Replace with a valid voice_id from ElevenLabs
 
@@ -170,4 +170,5 @@ void audio_info(const char* info) {
   Serial.print("audio_info: ");
   Serial.println(info);
 }
+
 
