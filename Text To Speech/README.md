@@ -150,4 +150,4 @@ Question += "your overall response must be in 20 words (Strictly Follow).";
 
 This module is part of **[ESP32-AI-Assistant](../README.md)** and is licensed under the **MIT License**.
 
-Would you like me to also rewrite **both modules’ READMEs with a consistent visual style** (same heading levels, emoji usage, formatting style) so your repo looks uniform and polished? This will make the whole project feel like a professional open-source package.
+
