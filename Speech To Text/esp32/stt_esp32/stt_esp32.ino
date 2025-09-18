@@ -1,8 +1,8 @@
 #include <WiFi.h>
 #include <WebSocketsServer.h>
 
-const char* ssid = "It'sKhan";  // Replace with your Wi-Fi SSID
-const char* password = "itskhan321";  // Replace with your Wi-Fi password
+const char* ssid = "afrasiyab";  // Replace with your Wi-Fi SSID
+const char* password = "afra";  // Replace with your Wi-Fi password
 
 WebSocketsServer webSocket = WebSocketsServer(81);  // WebSocket server on port 81
 
@@ -63,3 +63,4 @@ void loop() {
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
   // Handle WebSocket events (optional)
 }
+
