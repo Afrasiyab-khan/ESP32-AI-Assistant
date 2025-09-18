@@ -1,119 +1,119 @@
-```markdown
-# 🗣️ Text-to-Speech (TTS) + AI Chat Module  
+# 🗣️ Text-to-Speech (TTS) + AI Chat Module
 
-This module turns ESP32 into a **mini AI assistant** that:
-1. Reads your question from Serial input.
-2. Sends it to **Groq’s ChatGPT API** for a short response.
-3. Converts the answer to **natural-sounding speech** using **ElevenLabs API**.
-4. Plays the audio back via I2S speakers.
+This module transforms your ESP32 into a **mini AI voice assistant** that:
+
+1️⃣ Reads user input from the Serial Monitor
+2️⃣ Sends it to **Groq’s API** for an AI-generated response
+3️⃣ Converts the response into **natural-sounding speech** using **ElevenLabs API**
+4️⃣ Plays the generated audio through an I2S speaker
 
 ---
 
 ## 📂 Folder Structure
-```
 
+```bash
 text-to-speech/
 ├── esp32/
-│   └── tts\_esp32.ino      # ESP32 firmware (Groq + ElevenLabs integration)
-└── README.md              # This documentation file
-
-````
+│   └── tts_esp32.ino       # ESP32 firmware (Groq + ElevenLabs integration)
+└── README.md               # This documentation file
+```
 
 ---
 
 ## 🧩 How It Works
 
-### 🔧 ESP32 Code (`tts_esp32.ino`)
-- Connects to Wi-Fi.
-- Waits for user input in Serial Monitor.
-- Sends the text to Groq’s API (mixtral-8x7b-32768 model).
-- Takes the AI response, sends it to ElevenLabs for TTS conversion.
-- Saves the MP3 file to SPIFFS.
-- Plays it through I2S DAC output (works with I2S speaker or MAX98357A module).
+### 🔧 ESP32 Firmware (`tts_esp32.ino`)
+
+* Connects to Wi-Fi with your SSID & Password
+* Waits for user input from Serial Monitor
+* Sends input text to **Groq API** (model: `mixtral-8x7b-32768`)
+* Receives AI-generated response (limited to \~20 words)
+* Sends response to **ElevenLabs API** for TTS conversion
+* Stores returned MP3 file in **SPIFFS**
+* Plays audio using I2S DAC (works with MAX98357A or any I2S amplifier)
 
 ---
 
 ## 🛠 Hardware Setup
 
-| Component       | GPIO Pin |
-|----------------|---------|
-| I2S Data (DIN) | 25      |
-| I2S Bit Clock  | 27      |
-| I2S LR Clock   | 26      |
-| Speaker Module | Connect to I2S pins |
+| Signal               | GPIO Pin |
+| -------------------- | -------- |
+| I2S Data (DIN)       | 25       |
+| I2S Bit Clock (BCLK) | 27       |
+| I2S LR Clock (LRC)   | 26       |
 
-You will need:
-- ESP32 Dev Board
-- I2S-compatible amplifier (e.g., MAX98357A)
-- Speaker (4Ω or 8Ω)
+**Required Components:**
+
+* ESP32 Dev Board
+* I2S DAC module (e.g., MAX98357A)
+* 4Ω or 8Ω speaker
 
 ---
 
 ## 📋 Software Requirements
 
 ### Arduino (ESP32)
-- **Libraries Needed:**
-  - `WiFi.h`
-  - `HTTPClient.h`
-  - `ArduinoJson.h`
-  - `SPIFFS.h`
-  - `Audio.h`
-- Configure `ssid`, `password`, `elevenlabs_api_key`, `voice_id`, and **Groq API key**.
+
+**Required Libraries:**
+
+* `WiFi.h`
+* `HTTPClient.h`
+* `ArduinoJson.h`
+* `SPIFFS.h`
+* `Audio.h`
+
+**Configuration:**
+Inside `tts_esp32.ino`, update:
+
+```cpp
+const char* ssid = "YourWiFiName";
+const char* password = "YourWiFiPassword";
+const char* elevenlabs_api_key = "Your_ElevenLabs_API_Key";
+const char* voice_id = "Your_Chosen_Voice_ID";
+```
+
+Inside `getChatGPTResponse()`, set your Groq API key:
+
+```cpp
+String token_key = String("Bearer ") + "your_groq_api_key";
+```
 
 ---
 
 ## ⚙️ Setup Instructions
 
 ### 1️⃣ Flash ESP32
-Open `tts_esp32.ino` and update:
-```cpp
-const char* ssid = "YourWiFiName";
-const char* password = "YourWiFiPassword";
-const char* elevenlabs_api_key = "Your_ElevenLabs_API_Key";
-const char* voice_id = "Your_Chosen_Voice_ID";
-````
 
-Update **Groq API key** inside `getChatGPTResponse()`:
-
-```cpp
-String token_key = String("Bearer ") + "your_groq_api_key";
-```
-
-Then:
-
-* Select ESP32 board in Arduino IDE
-* Upload code
-* Open Serial Monitor at `115200 baud`
+* Open `tts_esp32.ino`
+* Update Wi-Fi credentials, API keys, and voice ID
+* Select your ESP32 board in Arduino IDE
+* Upload code and open Serial Monitor at **115200 baud**
 
 ---
 
 ### 2️⃣ Ask a Question
 
-In Serial Monitor:
+When prompted in Serial Monitor:
 
 ```
-Ask your Question: 
+Ask your Question:
 ```
 
-Type:
+Type your question (e.g., `What is AI?`) and press Enter.
 
-```
-What is AI?
-```
+**ESP32 Workflow:**
 
-ESP32 will:
-
-* Send request to Groq API
-* Get short AI response
-* Convert to audio via ElevenLabs
-* Play it via speaker
+1. Sends your question to **Groq API**
+2. Receives AI response (short answer)
+3. Converts response to speech via ElevenLabs
+4. Plays audio through I2S speaker
 
 ---
 
-## 🖼️ Example Serial Output
+## 🖥️ Example Serial Output
 
 ```
-Connecting to It'sKhan
+Connecting to WiFi...
 ...... connected
 IP address: 192.168.0.101
 Ask your Question: 
@@ -126,25 +126,28 @@ Playing audio...
 
 ## 🛠 Troubleshooting
 
-* **No sound:** Check I2S wiring & speaker connection.
-* **Error connecting to API:** Ensure valid Groq & ElevenLabs API keys.
-* **Large response cutoff:** You can increase SPIFFS size or limit response length (already set to \~20 words).
+| Issue               | Solution                                         |
+| ------------------- | ------------------------------------------------ |
+| 🔇 No Sound         | Verify I2S wiring & speaker polarity             |
+| 🌐 API Error        | Ensure Groq & ElevenLabs API keys are valid      |
+| ✂️ Response Cut Off | Increase SPIFFS size or limit AI response length |
 
 ---
 
 ## 💡 Customization
 
-* **Change Voice:** Replace `voice_id` with any ElevenLabs voice.
-* **Change AI Model:** Use Groq-supported models (`gemma-7b-it`, `llama3-70b-8192`, etc.)
-* **Control Response Size:** Modify this line in `loop()`:
+* **Change Voice:** Replace `voice_id` with any ElevenLabs-supported voice
+* **Switch AI Model:** Use other Groq models (`gemma-7b-it`, `llama3-70b-8192`, etc.)
+* **Control Response Size:** Adjust instruction in `loop()` to modify output length
 
 ```cpp
-Question += "your overall response must be in 20 words(Strictly Follow).";
+Question += "your overall response must be in 20 words (Strictly Follow).";
 ```
 
 ---
 
 ## 📜 License
 
-This module is part of [ESP32-AI-Assistant](../README.md) and is licensed under the MIT License.
+This module is part of **[ESP32-AI-Assistant](../README.md)** and is licensed under the **MIT License**.
 
+Would you like me to also rewrite **both modules’ READMEs with a consistent visual style** (same heading levels, emoji usage, formatting style) so your repo looks uniform and polished? This will make the whole project feel like a professional open-source package.
