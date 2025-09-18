@@ -126,7 +126,7 @@ pip install websockets pyautogui
 > Speaker Plays Natural Voice 🎙️
 ```
 
-📌 **Recommended Image/Video:**
+📌 **Video:**
 
 https://github.com/user-attachments/assets/5a6685ba-b317-4cf6-ac32-0f73383c1348
 
@@ -161,4 +161,5 @@ Licensed under **MIT License** – free to use, modify, and distribute.
 * **Arduino & Python Community** → Open-source tools and libraries
 
 **© By - Afrasiyab Khan (Software Engineer)**
+
 
