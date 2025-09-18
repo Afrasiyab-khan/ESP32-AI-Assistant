@@ -1,11 +1,18 @@
-````markdown
-# 🤖 ESP32 AI Assistant  
+# 🤖 ESP32 AI Assistant
 
-A **cost-effective, dual-ESP32 voice assistant** that combines:
-- 🗣 **Speech-to-Text (STT):** Hand-detection triggered transcription using ESP32 + Python.
-- 🔊 **Text-to-Speech (TTS):** AI-powered response generation using Groq API + natural voice synthesis with ElevenLabs API.
+A **cost-effective, dual-ESP32 voice assistant** designed to deliver a smooth **hands-free AI experience** using **affordable hardware** and **free APIs (where possible)**.
 
-This project demonstrates how to build a modular, offline/online hybrid AI assistant that uses affordable hardware and free APIs (where possible).
+---
+
+## 🏗️ Overview
+
+This project demonstrates how to build a **modular, offline/online hybrid AI assistant** that can:
+
+* 🗣 **Convert speech to text** (STT) triggered by hand detection
+* 🔊 **Generate AI responses** using Groq API
+* 🗨 **Speak answers naturally** with ElevenLabs TTS
+
+📌 **Goal:** Make voice assistants more **affordable, extensible, and DIY-friendly** for makers & researchers.
 
 ---
 
@@ -18,48 +25,57 @@ flowchart LR
     TEXT -->|User Types Question| ESP_TTS[ESP32 + Groq API]
     ESP_TTS -->|AI Response| ELEVEN[ElevenLabs TTS]
     ELEVEN -->|MP3 Output| SPEAKER[(Speaker)]
-````
+```
 
+📌 **Architecture Image:**
+
+<img width="629" height="332" alt="image" src="https://github.com/user-attachments/assets/9c206732-01b8-404d-abdd-24748f6bda10" />
 ---
 
 ## 📂 Project Structure
 
 ```
 ESP32-AI-Assistant/
-├── Speech To Text/            # Module 1: Hand-detection + Speech-to-Text
+├── Speech To Text/            
 │   ├── esp32/                 # ESP32 firmware for hand detection + WebSocket
 │   ├── python/                # Python script to trigger Windows STT
-│   └── README.md              # Detailed setup guide for STT module
+│   └── README.md              # Setup guide for STT module
 │
-└── Text To Speech/            # Module 2: AI Chat + Text-to-Speech
+└── Text To Speech/            
     ├── esp32/                 # ESP32 firmware for Groq + ElevenLabs TTS
-    └── README.md              # Detailed setup guide for TTS module
+    └── README.md              # Setup guide for TTS module
 ```
 
-Each module contains its own `README.md` with **pin diagrams, setup steps, and dependencies**.
+Each module contains **pin diagrams, setup steps, and dependencies** for quick onboarding.
 
 ---
 
 ## ✨ Features
 
-✅ **Modular Design:** Two ESP32 boards (STT & TTS) working independently.
-✅ **Hands-Free Input:** IR sensor automatically triggers speech-to-text mode.
-✅ **AI-Generated Response:** Uses Groq API (fast & free tier available).
-✅ **Natural-Sounding Voice:** ElevenLabs API for realistic speech synthesis.
-✅ **Plug-and-Play Setup:** Minimal wiring, works with MAX98357A I2S audio module.
-✅ **Open-Source & Extensible:** Easy to add new features or swap APIs.
+| Feature                     | Description                                        |
+| --------------------------- | -------------------------------------------------- |
+| ✅ **Modular Design**        | Two ESP32 boards (STT & TTS) working independently |
+| 🖐 **Hands-Free Input**     | IR sensor automatically triggers STT               |
+| ⚡ **Fast AI Responses**     | Powered by **Groq API** (free tier available)      |
+| 🎙 **Natural Voice Output** | ElevenLabs API provides realistic speech synthesis |
+| 🔌 **Plug-and-Play Setup**  | Works with MAX98357A I2S module                    |
+| 🛠 **Extensible**           | Swap APIs, add wake-word, or build offline mode    |
 
 ---
 
 ## 🛠 Hardware Requirements
 
-| Component              | Quantity | Notes                            |
-| ---------------------- | -------- | -------------------------------- |
-| ESP32 Dev Board        | 2        | One for STT, one for TTS         |
-| IR Sensor Module       | 1        | For hand detection (STT trigger) |
-| I2S DAC Module         | 1        | MAX98357A recommended            |
-| Speaker (4Ω or 8Ω)     | 1        | Connect to I2S output            |
-| Computer with Python 3 | 1        | For running STT script           |
+| Component              | Qty | Notes                            |
+| ---------------------- | --- | -------------------------------- |
+| ESP32 Dev Board        | 2   | One for STT, one for TTS         |
+| IR Sensor Module       | 1   | For hand detection (STT trigger) |
+| I2S DAC Module         | 1   | MAX98357A recommended            |
+| Speaker (4Ω or 8Ω)     | 1   | Connect to I2S output            |
+| Computer with Python 3 | 1   | For running STT script           |
+
+📌 **Wiring Diagram:**
+
+<img width="602" height="341" alt="image" src="https://github.com/user-attachments/assets/9cc5c4cd-59d7-40b4-b735-a46684cff31c" />
 
 ---
 
@@ -68,39 +84,40 @@ Each module contains its own `README.md` with **pin diagrams, setup steps, and d
 * **Arduino IDE** with ESP32 board package
 * **Python 3.x** with dependencies:
 
-  ```bash
-  pip install websockets pyautogui
-  ```
-* **API Keys:**
+```bash
+pip install websockets pyautogui
+```
 
-  * Groq API Key ([Get Here](https://console.groq.com))
-  * ElevenLabs API Key ([Get Here](https://elevenlabs.io))
+* **API Keys Needed:**
+
+  * [Groq API Key](https://console.groq.com)
+  * [ElevenLabs API Key](https://elevenlabs.io)
 
 ---
 
 ## 🚀 Setup & Usage
 
-### 1️⃣ Speech-to-Text Module
+### 1️⃣ Speech-to-Text (STT)
 
-1. Flash ESP32 with code in `Speech To Text/esp32/stt_esp32`
-2. Run Python script in `Speech To Text/python/mic_to_text.py`
-3. Wave your hand near the IR sensor → Windows Speech-to-Text will start recording.
+1. Flash ESP32 with `Speech To Text/esp32/stt_esp32`
+2. Run Python script `Speech To Text/python/mic_to_text.py`
+3. Wave hand near IR sensor → Windows STT records speech
 
-Detailed guide → [Speech-to-Text README](./Speech%20To%20Text/README.md)
-
----
-
-### 2️⃣ Text-to-Speech Module
-
-1. Flash ESP32 with code in `Text To Speech/esp32/tts_esp32`
-2. Open Serial Monitor → Type a question → ESP32 fetches AI reply.
-3. Response is converted to audio and played on the speaker.
-
-Detailed guide → [Text-to-Speech README](./Text%20To%20Speech/README.md)
+📖 Detailed Guide → [STT README](./Speech%20To%20Text/README.md)
 
 ---
 
-## 🖼️ Example Demo
+### 2️⃣ Text-to-Speech (TTS)
+
+1. Flash ESP32 with `Text To Speech/esp32/tts_esp32`
+2. Open Serial Monitor → Type a question
+3. ESP32 fetches AI reply → ElevenLabs converts to speech → Speaker plays output
+
+📖 Detailed Guide → [TTS README](./Text%20To%20Speech/README.md)
+
+---
+
+## 🎥 Example Demo
 
 ```
 > Hand Detected → STT Activated
@@ -109,44 +126,39 @@ Detailed guide → [Text-to-Speech README](./Text%20To%20Speech/README.md)
 > Speaker Plays Natural Voice 🎙️
 ```
 
+📌 **Recommended Image/Video:**
+
+https://github.com/user-attachments/assets/5a6685ba-b317-4cf6-ac32-0f73383c1348
+
 ---
 
 ## 🏗 Roadmap
 
-* [ ] GUI for starting/stopping STT without Python terminal
-* [ ] Offline Speech-to-Text using Vosk
-* [ ] Offline TTS using EdgeTTS or Coqui TTS
-* [ ] Add wake-word detection (e.g., "Hey AI!")
+* [ ] GUI for STT start/stop (no terminal needed)
+* [ ] Offline STT using **Vosk**
+* [ ] Offline TTS using **EdgeTTS** or **Coqui TTS**
+* [ ] Add **wake-word detection** (e.g., “Hey AI!”)
 
 ---
 
 ## 🤝 Contributing
 
 Pull requests are welcome!
-If you have suggestions, open an issue or submit a PR to improve this project.
+If you have suggestions, open an **issue** or submit a **PR** to improve this project.
 
 ---
 
 ## 📜 License
 
-This project is licensed under the **MIT License** – free to use, modify, and distribute.
+Licensed under **MIT License** – free to use, modify, and distribute.
 
 ---
 
 ## 🌟 Acknowledgments
 
-* **Groq API** for blazing-fast LLM inference
-* **ElevenLabs** for high-quality TTS voices
-* Open-source Arduino libraries & Python tools
+* **Groq API** → Fast LLM inference
+* **ElevenLabs** → High-quality TTS
+* **Arduino & Python Community** → Open-source tools and libraries
 
-```
-
----
-
-## 🔑 Why This is Professional:
-✅ **Mermaid diagram** → instantly explains architecture visually  
-✅ **Project structure** → shows folder layout clearly  
-✅ **Links to sub-readmes** → professional repo navigation  
-✅ **Features + Hardware + Software sections** → like a real open-source project  
-✅ **Roadmap + License + Acknowledgments** → makes repo look active & polished  
+**© By - Afrasiyab Khan (Software Engineer)**
 
