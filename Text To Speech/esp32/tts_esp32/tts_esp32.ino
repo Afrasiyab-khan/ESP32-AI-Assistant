@@ -7,7 +7,7 @@
 
 const char* ssid = "It'sKhan";  // Replace with your SSID
 const char* password = "itskhan321";  // Replace with your WiFi password
-const char* elevenlabs_api_key = "sk_edb70ddeaab54b87a1e61f7df651a79d62d8060bd249f392";  // Your ElevenLabs API key
+const char* elevenlabs_api_key = "Your_ElevenLabs_API_Key";  // Your ElevenLabs API key
 const char* voice_id = "pNInz6obpgDQGcFmaJgB";  // Replace with a valid voice_id from ElevenLabs
 
 #define I2S_DOUT 25
@@ -82,7 +82,7 @@ String getChatGPTResponse(String question) {
 
   if (https.begin("https://api.groq.com/openai/v1/chat/completions")) {  // HTTPS
     https.addHeader("Content-Type", "application/json");
-    String token_key = String("Bearer ") + "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";
+    String token_key = String("Bearer ") + "your_groq_api_key";
     https.addHeader("Authorization", token_key);
 
     String payload = "{\"messages\": [{\"role\": \"user\", \"content\": \"" + question + "\"}], \"model\": \"mixtral-8x7b-32768\"}";
@@ -170,3 +170,4 @@ void audio_info(const char* info) {
   Serial.print("audio_info: ");
   Serial.println(info);
 }
+
